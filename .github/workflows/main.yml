@@ -2,11 +2,12 @@ name: PyInstallerExeBuild
 
 on:
   push:
-    branches: [ master ]
+    tags:
+      - 'v*
 
 jobs:
   build:
-
+    name: Create Release
     runs-on: windows-latest
 
     steps:
@@ -23,7 +24,10 @@ jobs:
       run: |
         pyinstaller main.spec
 
-    - uses: actions/upload-artifact@v2
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        name: zipped-exe
-        path: dist/
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        prerelease: false
+        files: |
+              /dist/*.exe
+

@@ -4,7 +4,6 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\she384\\Documents\\Python_Apps\\Hydrochemistry_Apps'],
              binaries=[],
              datas=[],
              hiddenimports=['cftime'],
@@ -32,4 +31,4 @@ exe = EXE(pyz,
           runtime_tmpdir=None,
           console=False,
 		  icon = 'assets\\2dropsshadow.ico',
-		  version = 'C:\\Users\\she384\\Documents\\Python_Apps\\Hydrochemistry_Apps\\hydro_apps_version.rc')
+		  version = 'hydro_apps_version.rc')

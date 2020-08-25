@@ -1,7 +1,7 @@
 VSVersionInfo(
   ffi=FixedFileInfo(
-    filevers=(1, 0, 6, 0),
-    prodvers=(1, 0, 6, 0),
+    filevers=(1, 1, 0, 0),
+    prodvers=(1, 1, 0, 0),
     mask=0x3f,
     flags=0x0,
     OS=0x40004,
@@ -17,12 +17,12 @@ VSVersionInfo(
         [StringStruct(u'CompanyName', u'CSIRO'),
 		StringStruct(u'Author', u'Kendall Sherrin'),
         StringStruct(u'FileDescription', u'Hydrochemistry Applications Launcher'),
-        StringStruct(u'FileVersion', u'1.0.6.0'),
+        StringStruct(u'FileVersion', u'1.1.0.0'),
         StringStruct(u'InternalName', u'hyd_apps'),
-        StringStruct(u'LegalCopyright', u'\xa9 14 July CSIRO 2020'),
+        StringStruct(u'LegalCopyright', u'\xa9 25 August CSIRO 2020'),
         StringStruct(u'OriginalFilename', u'Hydrochemistry Apps.exe'),
         StringStruct(u'ProductName', u'Hydrochemistry Apps'),
-        StringStruct(u'ProductVersion', u'1.0.6.0')])
+        StringStruct(u'ProductVersion', u'1.1.0.0')])
       ]), 
     VarFileInfo([VarStruct(u'Translation', [1033, 1200])])
   ]

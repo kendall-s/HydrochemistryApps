@@ -30,4 +30,6 @@ jobs:
         prerelease: false
         title: "Automatic Build"
         files: |
-          /dist/*.exe 
+          /dist/*.exe
+
+          

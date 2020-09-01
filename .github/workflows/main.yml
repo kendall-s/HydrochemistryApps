@@ -28,6 +28,7 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: false
+        title: "Automatic Build"
         files: |
-          *.exe
+          /dist/*.exe
 

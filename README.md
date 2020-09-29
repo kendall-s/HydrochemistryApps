@@ -6,6 +6,12 @@ Automated Github actions have been setup to enable the cloud building of the Hyd
 The build workflow will be triggered whenever a new "release" tag is pushed to the repo. A release tag is denoted as 
 beginning with a v, e.g. v1.5.1
 
+```editorconfig
+git tag "v1.1.1"
+git push -u origin "v1.1.1"
+```
+
+
 ### Technologies Used
 The application is built 100% using Python, making significant use of PyQt5 for the GUI aspect.  
 

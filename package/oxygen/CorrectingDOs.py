@@ -1,4 +1,7 @@
 import sys, csv
+
+from package.oxygen import do_utilities
+
 from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QLabel, QGridLayout,
                              QLineEdit, QTableWidget, QMessageBox, QTableWidgetItem, QHeaderView, QCheckBox)
 from PyQt5.QtGui import QIcon, QFont
@@ -7,7 +10,6 @@ import traceback
 
 
 class correctDos(QWidget):
-
 
     def __init__(self, file):
         super().__init__()
@@ -242,54 +244,48 @@ class correctDos(QWidget):
 
         self.show()
 
-    def get_index(self, arr, searchitem):
-        for i, x in enumerate(arr):
-            for j, y in enumerate(x):
-                if y == searchitem:
-                    return i, j
-        return "blueberry"  # if not found, but shouldn't happen unless doing check
 
     def readinlst(self, file):
 
-        filebuffer = open(file)
-        readbuffer = csv.reader(filebuffer, delimiter=' ')
-        projectslist = list(readbuffer)
-        filebuffer.close()
+        file_buffer = open(file)
+        read_buffer = csv.reader(file_buffer, delimiter=' ')
+        projectslist = list(read_buffer)
+        file_buffer.close()
 
-        dateindexx, dateindexy = self.get_index(projectslist, 'Date:')
+        dateindexx, dateindexy = do_utilities.get_index(projectslist, 'Date:')
         self.dateanalysed = projectslist[dateindexx][(dateindexy + 1)]
 
-        labindexx, labindexy = self.get_index(projectslist, 'Ship:')
+        labindexx, labindexy = do_utilities.get_index(projectslist, 'Ship:')
         self.lab = projectslist[labindexx][(labindexy + 7)]
 
-        analystx, analysty = self.get_index(projectslist, 'Chemist:')
+        analystx, analysty = do_utilities.get_index(projectslist, 'Chemist:')
         self.analyst = projectslist[analystx][(analysty + 1)]
 
-        self.iodatenormx, self.iodatenormy = self.get_index(projectslist, 'N(20)IO3:')
+        self.iodatenormx, self.iodatenormy = do_utilities.get_index(projectslist, 'N(20)IO3:')
         self.iodatenorm = projectslist[self.iodatenormx][(self.iodatenormy + 1)]
 
-        self.iodatevolx, self.iodatevoly = self.get_index(projectslist, 'Vol(20):')
+        self.iodatevolx, self.iodatevoly = do_utilities.get_index(projectslist, 'Vol(20):')
         self.iodatevol = projectslist[self.iodatevolx][(self.iodatevoly + 2)]
 
-        self.stdtiterx, self.stdtitery = self.get_index(projectslist, 'C):')
+        self.stdtiterx, self.stdtitery = do_utilities.get_index(projectslist, 'C):')
         self.stdtiter = projectslist[self.stdtiterx][(self.stdtitery + 1)]
 
-        self.blankx, self.blanky = self.get_index(projectslist, 'Blk:')
+        self.blankx, self.blanky = do_utilities.get_index(projectslist, 'Blk:')
         self.blank = projectslist[self.blankx][(self.blanky + 2)]
 
-        self.iodatetempx, self.iodatetempy = self.get_index(projectslist, 'IO3')
+        self.iodatetempx, self.iodatetempy = do_utilities.get_index(projectslist, 'IO3')
         self.iodatetemp = projectslist[self.iodatetempx][(self.iodatetempy + 3)]
 
-        self.thionormx, self.thionormy = self.get_index(projectslist, '(20C)')
+        self.thionormx, self.thionormy = do_utilities.get_index(projectslist, '(20C)')
         self.thionorm = projectslist[self.thionormx][(self.thionormy + 1)]
 
-        self.thiotempx, self.thiotempy = self.get_index(projectslist, 'stdize:')
+        self.thiotempx, self.thiotempy = do_utilities.get_index(projectslist, 'stdize:')
         self.thiotemp = projectslist[self.thiotempx][(self.thiotempy + 1)]
 
-        filenamex, filenamey = self.get_index(projectslist, 'filename:')
+        filenamex, filenamey = do_utilities.get_index(projectslist, 'filename:')
         self.filename = projectslist[filenamex][(filenamey + 1)]
 
-        self.startx, self.starty = self.get_index(projectslist, 'Sta')
+        self.startx, self.starty = do_utilities.get_index(projectslist, 'Sta')
 
         numberofsamples = len(projectslist) - (self.startx + 2)
 
@@ -351,103 +347,48 @@ class correctDos(QWidget):
 
         return stationnum, castnum, bottlenum, flaskid, flaskvol, rawtiter, titer, oxygenmilliter, thiotemps, drawtemp, volts, titertime
 
-    def rhoddw(self, t):
-
-        # Calculates the density of pure water
-
-        z0 = 999.83952
-        z1 = 16.945176
-        z2 = -0.0079870401
-        z3 = -0.000046170461
-        z4 = 0.00000010556302
-        z5 = -2.8054253E-10
-        z6 = 0.01687985
-
-        rhot2 = z2 + float(t) * (z3 + float(t) * (z4 + float(t) * z5))
-        rhot1 = z0 + float(t) * (z1 + float(t) * rhot2)
-        rhoddw = rhot1 * 0.001 / (1 + z6 * float(t))
-
-        return rhoddw
-
-    def h2odvdt1(self, vol1, temp1, temp2):
-
-        # Calculates the given volume that an aqueous liquid would occupy at a given temp (temp2)
-        # Uses the change from temp1 to temp2
-        # See F4 Volume Properties of Water, CRC Handbook
-
-        if temp1 == 0 or temp1 == -9:
-            h2odvdt1 = 0
-        else:
-            rhoratio = self.rhoddw(float(temp1)) / self.rhoddw(float(temp2))
-            h2odvdt1 = float(vol1) * rhoratio
-
-        return h2odvdt1
-
-    def glassdvdt(self, volume, known_temp, desired_temp):
-
-        # Calculates the actual volume of a glass container at a given temperature, from the known volume at 20
-        expansion_coef = 0.00000975  # For borosilicate glass
-
-        glass_dvdt = float(volume) * (1 + expansion_coef * (float(desired_temp) - float(known_temp)))
-
-        return glass_dvdt
-
-    def oxycalc(self, thio20n, titer20, blank, botvol):
-        # Constants
-        o2mlpmeq = 5.598  # mL of O2 (STP) per milliequiv of O2 gas (5.598mL)
-        doreag = 0.0017  # Dissolved O2 in reagents @ 25deg
-        vreag = 2  # Volume of reagents used (2.0mL)
-
-        if float(thio20n) == 0 or float(titer20) == 0 or float(blank) == 0 or float(botvol) == 0 or float(
-                titer20) == -9:
-            oxycalc = 0
-        else:
-            o2ml = (float(titer20) - float(blank)) * float(thio20n) * o2mlpmeq - doreag
-            oxycalc = round(o2ml / ((float(botvol) - vreag) * 0.001), 3)
-
-        return oxycalc
-
-    def corrthionorm(self, iodatevol, iodatenorm, blank, stdtiter):
-        if self.override_thio_norm_check.isChecked():
-            thio20N = float(self.thionormtext.text())
-        else:
-            thio20N = (float(iodatevol) * float(iodatenorm)) / (float(stdtiter) - float(blank))
-
-        return thio20N
-
+    # Processing loop for data in file
     def completeproc(self, file):
 
         lst = file
         self.procced = True
+
         # Pull everything from the lst file
         stationnum, castnum, bottlenum, flaskid, flaskvol, rawtiter, \
         titer, oxygenmils, thiotemps, drawtemp, volts, titertime = self.readinlst(lst)
 
-        # Find the actual volume of iodate dispensed
+        # Find the actual volume of iodate dispensed (not actually required)
         #correctediodatetiter = self.h2odvdt1(self.iodateburettetext.text(), 20, self.iodatetemptext.text())
         #self.iodateburettetext.setText(str(round(correctediodatetiter, 5)))
 
-        correctediodatetiter = float(self.iodateburettetext.text())
+        corrected_iodate_titer = float(self.iodateburettetext.text())
 
-        # Determine the Thio normality
-        actualthion = self.corrthionorm(correctediodatetiter, self.iodatenormtext.text(), self.blanktext.text(),
-                                        self.titertext.text())
+        # Determine the Thio normality, if override calculation box is ticked - just use original
+        override = self.override_thio_norm_check.isChecked()
+        if override:
+            actual_thio_n = float(self.thionormtext.text())
+        else:
+            actual_thio_n = do_utilities.corrthionorm(corrected_iodate_titer, self.iodatenormtext.text(),
+                                            self.blanktext.text(), self.titertext.text())
 
-        roundedthio = round(actualthion, 5)
+        # Round the thio normality to expected sig digits and replace the value in the text box
+        roundedthio = round(actual_thio_n, 5)
         self.thionormtext.setText(str(roundedthio))
 
         global oxygenresults
         oxygenresults = []
+
         self.o2mol = []
         corr_flaskvol = []
         for i, x in enumerate(flaskvol):
-            corr_flaskvol.append(round(self.glassdvdt(x, 20, drawtemp[i]), 3))
+            corr_flaskvol.append(round(do_utilities.glassdvdt(x, 20, drawtemp[i]), 3))
 
         for i in range(len(stationnum)):
             oxygenresults.append(
-                round(self.oxycalc(actualthion, titer[i], float(self.blanktext.text()), corr_flaskvol[i]), 5))
+                round(do_utilities.oxycalc(actual_thio_n, titer[i], float(self.blanktext.text()), corr_flaskvol[i]), 5))
             self.o2mol.append(round(float(oxygenresults[i]) * self.ml_to_mol_coefficient, 4))
 
+        # Replace the data in the table view
         for i in range(len(stationnum)):
             self.datatable.setItem(i, 0, QTableWidgetItem(str(stationnum[i])))
             self.datatable.setItem(i, 1, QTableWidgetItem(str(castnum[i])))
@@ -465,27 +406,27 @@ class correctDos(QWidget):
 
     def saveresults(self, lst):
         # Replace results
-        filebuffer = open(lst)
-        readbuffer = csv.reader(filebuffer, delimiter=' ')
-        filelist = list(readbuffer)
-        filebuffer.close()
+        file_buffer = open(lst)
+        read_buffer = csv.reader(file_buffer, delimiter=' ')
+        file_list = list(read_buffer)
+        file_buffer.close()
 
         if self.procced is True:
             for i in range(self.numofsamples):
                 k = (self.startx + 2 + i)
-                filelist[k][10] = oxygenresults[i]
-                filelist[self.iodatenormx][(self.iodatenormy + 1)] = self.iodatenormtext.text()
-                filelist[self.iodatevolx][(self.iodatevoly + 2)] = self.iodateburettetext.text()
-                filelist[self.stdtiterx][(self.stdtitery + 1)] = self.titertext.text()
-                filelist[self.blankx][(self.blanky + 2)] = self.blanktext.text()
-                filelist[self.iodatetempx][(self.iodatetempy + 3)] = self.iodatetemptext.text()
-                filelist[self.thionormx][(self.thionormy + 1)] = self.thionormtext.text()
-                filelist[self.thiotempx][(self.thiotempy + 1)] = self.thiotemptext.text()
+                file_list[k][10] = oxygenresults[i]
+                file_list[self.iodatenormx][(self.iodatenormy + 1)] = self.iodatenormtext.text()
+                file_list[self.iodatevolx][(self.iodatevoly + 2)] = self.iodateburettetext.text()
+                file_list[self.stdtiterx][(self.stdtitery + 1)] = self.titertext.text()
+                file_list[self.blankx][(self.blanky + 2)] = self.blanktext.text()
+                file_list[self.iodatetempx][(self.iodatetempy + 3)] = self.iodatetemptext.text()
+                file_list[self.thionormx][(self.thionormy + 1)] = self.thionormtext.text()
+                file_list[self.thiotempx][(self.thiotempy + 1)] = self.thiotemptext.text()
 
         filebuffer = open(str(lst[0:-4]) + 'updated.LST', 'w', newline='')
         writebuffer = csv.writer(filebuffer, delimiter=' ')
 
-        for row in filelist:
+        for row in file_list:
             writebuffer.writerow(row)
 
         filebuffer.close()

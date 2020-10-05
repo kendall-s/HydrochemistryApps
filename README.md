@@ -1,6 +1,6 @@
 # Hydrochemistry Applications
 
-[![Actions Status](https://github.com/kendall-s/HydrochemistryApps/workflows/test_commit/badge.svg)](https://github.com/{owner}/{repo}/actions)
+[![Actions Status](https://github.com/kendall-s/HydrochemistryApps/workflows/test_commit/badge.svg)](https://github.com/kendall-s/HydrochemistryApps/actions)
 
 
 ### todo

@@ -1,6 +1,9 @@
 # Hydrochemistry Applications
 
-#### Need to write some tests, because it is a bit yolo at this point (also incorporate automated testing on each commit as workflow). 
+### todo
+- incorporate automated tests (done for DO app)
+- little bit of refactoring required throughout
+- change cpu intensive apps to be non-blocking (put calcs on new thread)
 
 ## Technical 
 ### Application Packaging

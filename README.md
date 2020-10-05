@@ -1,5 +1,8 @@
 # Hydrochemistry Applications
 
+[![Actions Status](https://github.com/kendall-s/HydrochemistryApps/workflows/test_commit/badge.svg)](https://github.com/{owner}/{repo}/actions)
+
+
 ### todo
 - incorporate automated tests (done for DO app)
 - little bit of refactoring required throughout

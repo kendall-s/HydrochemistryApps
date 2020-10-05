@@ -34,7 +34,7 @@ The applications are housed within a unified "launcher" allowing one program to 
 ## Applications Included
 
 ### Dissolved Oxygen Calculator
-This is an glorified calculator for re-calculating final dissolved oxygen values. All of the values that contribute to 
+This is a glorified calculator for re-calculating final dissolved oxygen values. All of the values that contribute to 
 the dissolved oxygen result can be changed. Exporting of different file formats can also be done.
 
 ### QC Table Reader

@@ -1,5 +1,7 @@
 # Hydrochemistry Applications
 
+#### Need to write some tests, because it is a bit yolo at this point (also incorporate automated testing on each commit as workflow). 
+
 ## Technical 
 ### Application Packaging
 Automated Github actions have been setup to enable the cloud building of the Hydrochemistry Apps. 

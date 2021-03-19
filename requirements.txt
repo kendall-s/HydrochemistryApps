@@ -43,6 +43,6 @@ threadpoolctl==2.1.0
 typed-ast==1.4.0
 typing-extensions==3.7.4.3
 wincertstore==0.2
-wrapt==1.12.1
+wrapt==1.11.2
 xarray==0.12.0
 xlrd==1.2.0

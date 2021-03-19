@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QGridLayout, QApplication, QLabel, QPushButton, QLineEdit, QFrame,
                              QComboBox, QFileDialog)
 from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtCore import QUrl
 import pandas as pd
 import os
 import statistics
@@ -127,7 +128,7 @@ class SmoothBinner(QMainWindow):
         """
         Allows the use to create a file for saving to
         """
-        file_path = str(QFileDialog.getSaveFileUrl(self, 'Save As', 'C:/', "CSV (*.csv)")[0].path())
+        file_path = str(QFileDialog.getSaveFileUrl(self, 'Save As', filter="CSV (*.csv)")[0].path())
         self.output_file_lineedit.setText(file_path)
         self.output_path = file_path[1:]
 

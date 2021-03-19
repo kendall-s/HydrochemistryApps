@@ -127,7 +127,7 @@ class SmoothBinner(QMainWindow):
         """
         Allows the use to create a file for saving to
         """
-        file_path = str(QFileDialog.getSaveFileUrl(self, 'Save File', 'c:\\', "CSV file (*.csv)")[0].path())
+        file_path = str(QFileDialog.getSaveFileUrl(self, 'Save As', 'C:/', "CSV (*.csv)")[0].path())
         self.output_file_lineedit.setText(file_path)
         self.output_path = file_path[1:]
 

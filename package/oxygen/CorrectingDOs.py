@@ -1,13 +1,10 @@
 import sys, csv
-
 from package.oxygen import do_utilities
-
 from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton, QLabel, QGridLayout,
                              QLineEdit, QTableWidget, QMessageBox, QTableWidgetItem, QHeaderView, QCheckBox)
 from PyQt5.QtGui import QIcon, QFont
 import hyproicons
 import traceback
-
 
 class correctDos(QWidget):
 

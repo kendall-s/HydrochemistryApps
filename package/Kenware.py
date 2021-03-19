@@ -14,6 +14,7 @@ from package.io_norm import IO3Norm
 from package.time_stamps import Time_Stamp_Generator
 from package.nc_checker import NC_Checker_Main
 from package.glass_cal import GlassCal
+from package.smooth_bin import SmoothBin
 
 import hyproicons
 
@@ -74,7 +75,7 @@ class KenWareMain(QMainWindow):
                 border-style: inset;
             }
             QPushButton[close=true] {
-                font: 12px;
+                font: 16px;
                 border: 0px solid;
                 background-color: none;   
             }
@@ -95,7 +96,7 @@ class KenWareMain(QMainWindow):
         grid_layout.setSpacing(10)
         grid_layout.setContentsMargins(0, 0, 0, 0)
 
-        self.setGeometry(0, 0, 400, 500)
+        self.setGeometry(0, 0, 400, 600)
         qtRectangle = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
         centerPoint = QApplication.desktop().screenGeometry(screen).center()
@@ -107,17 +108,17 @@ class KenWareMain(QMainWindow):
         self.setWindowTitle('Hydro Apps')
         self.showNormal()
 
-        x_close = QPushButton('x')
+        x_close = QPushButton(' x ')
         x_close.setProperty('close', True)
         x_close.setFont(QFont('Verdana'))
         x_close.clicked.connect(self.close_app)
         x_close.setToolTip('Close')
 
-        __min = QPushButton(' - ')
-        __min.setProperty('close', True)
-        __min.setFont(QFont('Verdana'))
-        __min.clicked.connect(self.min_app)
-        __min.setToolTip('Minimise')
+        minimise = QPushButton(' - ')
+        minimise.setProperty('close', True)
+        minimise.setFont(QFont('Verdana'))
+        minimise.clicked.connect(self.min_app)
+        minimise.setToolTip('Minimise')
 
         header_logo = QLabel()
         header_logo.setPixmap(QPixmap(':/assets/2dropsshadow.ico').scaled(32, 32, Qt.KeepAspectRatio))
@@ -169,6 +170,10 @@ class KenWareMain(QMainWindow):
         time_stamp_launch = QPushButton('Launch Stamp Gen')
         time_stamp_launch.clicked.connect(self.open_time_gen)
 
+        smooth_bin_label = QLabel('Smooth Bins')
+        smooth_bin_launch = QPushButton('Launch Smooth Bins')
+        smooth_bin_launch.clicked.connect(self.open_smooth_bin)
+
         linesep3 = QFrame()
         linesep3.setFrameShape(QFrame.HLine)
         linesep3.setFrameShadow(QFrame.Sunken)
@@ -200,10 +205,10 @@ class KenWareMain(QMainWindow):
         close.clicked.connect(self.close_app)
         close.setFixedWidth(125)
 
-        grid_layout.addWidget(window_surround, 0, 0, 21, 4)
-        grid_layout.addWidget(header_frame, 1, 1, 3, 2)
-        grid_layout.addWidget(header_logo, 1, 1, 3, 1, Qt.AlignHCenter)
-        grid_layout.addWidget(header_label, 1, 1, 3, 2, Qt.AlignHCenter)
+        grid_layout.addWidget(window_surround, 0, 0, 22, 4)
+        grid_layout.addWidget(header_frame, 1, 1, 2, 2)
+        grid_layout.addWidget(header_logo, 1, 1, 2, 1, Qt.AlignHCenter)
+        grid_layout.addWidget(header_label, 1, 1, 2, 2, Qt.AlignHCenter)
         #grid_layout.addWidget(body_frame, 1, 0, 5, 2)
         grid_layout.addWidget(docalc_label, 4, 1)
         grid_layout.addWidget(docalc_launch, 4, 2)
@@ -229,13 +234,15 @@ class KenWareMain(QMainWindow):
         grid_layout.addWidget(time_stamp_label, 18, 1)
         grid_layout.addWidget(time_stamp_launch, 18, 2)
         grid_layout.addWidget(linesep8, 19, 1, 1, 2)
+        grid_layout.addWidget(smooth_bin_label, 20, 1)
+        grid_layout.addWidget(smooth_bin_launch, 20, 2)
         #grid_layout.addWidget(close, 15, 1, 1, 2, Qt.AlignHCenter)
 
         dialog_buttons_layout = QHBoxLayout()
 
         grid_layout.addLayout(dialog_buttons_layout, 0, 2, Qt.AlignBottom | Qt.AlignRight)
 
-        dialog_buttons_layout.addWidget(__min)
+        dialog_buttons_layout.addWidget(minimise)
         dialog_buttons_layout.addWidget(x_close)
 
         #grid_layout.addWidget(x_close, 0, 3, Qt.AlignLeft | Qt.AlignBottom)
@@ -274,6 +281,10 @@ class KenWareMain(QMainWindow):
 
     def open_time_gen(self):
         self.time_gen = Time_Stamp_Generator.TimeStamps()
+        sleep(0.3)
+
+    def open_smooth_bin(self):
+        self.smooth_bin = SmoothBin.SmoothBinner()
         sleep(0.3)
 
     def close_app(self):

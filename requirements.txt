@@ -12,7 +12,6 @@ google-pasta==0.2.0
 h5py==2.10.0
 isort==4.3.21
 joblib==0.16.0
-Keras-Preprocessing==1.1.2
 kiwisolver==1.1.0
 lazy-object-proxy==1.4.3
 matplotlib==3.1.1
@@ -33,9 +32,7 @@ pyqtgraph==0.11.1
 python-dateutil==2.8.1
 pytz==2019.3
 pywin32-ctypes==0.2.0
-scikit-learn==0.23.1
 six==1.12.0
-sktime==0.4.1
 statsmodels==0.11.1
 tensorboard==2.4.1
 tensorflow==2.4.1

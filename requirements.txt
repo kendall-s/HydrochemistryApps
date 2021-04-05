@@ -22,9 +22,7 @@ PyQt5-sip==12.7.0
 python-dateutil==2.8.1
 pytz==2019.3
 pywin32-ctypes==0.2.0
-scikit-learn==0.23.1
 six==1.13.0
-sktime==0.4.1
 statsmodels==0.11.1
 threadpoolctl==2.1.0
 typed-ast==1.4.0

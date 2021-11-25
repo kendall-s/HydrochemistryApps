@@ -85,6 +85,9 @@ class SmoothBinner(QMainWindow):
         self.smoothing_method_combo = QComboBox()
         self.smoothing_method_combo.addItems(['Median', 'Average'])
 
+        time_buffer_label = QLabel('Time Buffer Adjust (s)')
+        self.time_buffer = QLineEdit("0.1")
+
         calculate_button = QPushButton('Calculate')
         calculate_button.clicked.connect(self.calculate_function)
 
@@ -106,10 +109,13 @@ class SmoothBinner(QMainWindow):
         grid_layout.addWidget(smoothing_method_label, 8, 0, 1, 1)
         grid_layout.addWidget(self.smoothing_method_combo, 8, 1, 1, 1)
 
-        grid_layout.addWidget(calculate_button, 10, 0, 1, 2)
+        grid_layout.addWidget(time_buffer_label, 9, 0, 1, 1)
+        grid_layout.addWidget(self.time_buffer, 9, 1, 1, 1)
 
-        grid_layout.addWidget(output_label, 11, 0, 1, 2)
-        grid_layout.addWidget(self.output, 12, 0, 1, 2)
+        grid_layout.addWidget(calculate_button, 11, 0, 1, 2)
+
+        grid_layout.addWidget(output_label, 12, 0, 1, 2)
+        grid_layout.addWidget(self.output, 13, 0, 1, 2)
 
         self.centralWidget().setLayout(grid_layout)
 
@@ -168,6 +174,8 @@ class SmoothBinner(QMainWindow):
                 appending_count = 1
                 creating_measurement = True
 
+                time_buffer = float(self.time_buffer.text())
+
                 f = open(self.output_path, "a")
 
                 for i, x in enumerate(time):
@@ -181,7 +189,7 @@ class SmoothBinner(QMainWindow):
                         # Add to the subset and check if we are getting close to a second
                         end_time = x
                         end_index = i
-                        if (end_time - start_time) > 0.76:
+                        if (end_time - start_time) > (1 - time_buffer) or (end_time - start_index) < (1 + time_buffer):
                             signal_subset = smoothed_signal[start_index: end_index]
                             signal_subset_median = statistics.median(signal_subset)
 
